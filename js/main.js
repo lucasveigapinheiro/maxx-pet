@@ -1,0 +1,214 @@
+/* ============================================================
+   MAXX Pet Shop — Animations & interactions
+   GSAP 3.12 · ScrollTrigger · reduced-motion safe
+   ============================================================ */
+
+(() => {
+  'use strict';
+
+  const qs = (sel, ctx = document) => ctx.querySelector(sel);
+  const qsa = (sel, ctx = document) => Array.from(ctx.querySelectorAll(sel));
+  const reduced = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // ---- Year stamp ----
+  const yearEl = qs('#year');
+  if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+  // ---- Header scroll state ----
+  const header = qs('[data-header]');
+  let lastY = 0;
+  let ticking = false;
+  const onScroll = () => {
+    if (!header) return;
+    if (window.scrollY > 12) header.classList.add('is-scrolled');
+    else header.classList.remove('is-scrolled');
+  };
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      requestAnimationFrame(() => { onScroll(); ticking = false; });
+      ticking = true;
+    }
+  }, { passive: true });
+  onScroll();
+
+  // ---- Mobile menu ----
+  const navToggle = qs('[data-nav-toggle]');
+  const mobileNav = qs('[data-mobile-nav]');
+  if (navToggle && mobileNav) {
+    const closeMenu = () => {
+      navToggle.setAttribute('aria-expanded', 'false');
+      mobileNav.hidden = true;
+    };
+    navToggle.addEventListener('click', () => {
+      const open = navToggle.getAttribute('aria-expanded') === 'true';
+      navToggle.setAttribute('aria-expanded', String(!open));
+      mobileNav.hidden = open;
+    });
+    qsa('[data-mobile-link]', mobileNav).forEach(link => {
+      link.addEventListener('click', closeMenu);
+    });
+  }
+
+  // ============================================================
+  // GSAP
+  // ============================================================
+  if (typeof gsap === 'undefined') {
+    // No GSAP — CSS fallback reveals
+    qsa('[data-reveal]').forEach(el => {
+      el.style.opacity = '1';
+      el.style.transform = 'none';
+    });
+    return;
+  }
+
+  if (typeof ScrollTrigger !== 'undefined') {
+    gsap.registerPlugin(ScrollTrigger);
+  }
+
+  gsap.defaults({ ease: 'power3.out', duration: 0.7 });
+  // Don't let the ticker suspend and strand in-flight tweens. The page may
+  // load while the tab is hidden (auto-play disabled, etc.) — waking the
+  // ticker now keeps the hero entrance from getting stuck at opacity 0.
+  gsap.ticker.lagSmoothing(false);
+  gsap.ticker.wake();
+
+  // Reduced-motion branch — disable tweens, render final state
+  if (reduced()) {
+    gsap.set('[data-reveal]', { opacity: 1, y: 0, clearProps: 'opacity,transform' });
+  } else {
+    // ---- Hero entrance ----
+    // fromTo owns both endpoints — no CSS or .set() baseline needed.
+    // fromTo with explicit target — prevents the tween from ending at the
+    // pre-set initial state (opacity 0) if anything else mutates the baseline.
+    const heroTl = gsap.timeline();
+    heroTl
+      .fromTo('.hero .eyebrow', { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.6 })
+      .fromTo('.hero h1.display', { opacity: 0, y: 28 }, { opacity: 1, y: 0, duration: 0.85 }, '-=0.35')
+      .fromTo('.hero .lede', { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.7 }, '-=0.5')
+      .fromTo('.hero .hero-actions', { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.6 }, '-=0.45')
+      .fromTo('.hero .hero-tags li', { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.5, stagger: 0.08 }, '-=0.4')
+      .fromTo('.hero-figure', { opacity: 0, scale: 0.92 }, { opacity: 1, scale: 1, duration: 1, ease: 'power2.out' }, '-=0.7')
+      .fromTo('.hero-badge', { opacity: 0, y: -10 }, { opacity: 1, y: 0, duration: 0.6 }, '-=0.4');
+
+    // ---- Hero SVG strokes draw (no-op if SVG is <img>, not inline) ----
+    if (qs('.hero-stroke')) {
+      gsap.fromTo('.hero-stroke',
+        { strokeDasharray: 800, strokeDashoffset: 800 },
+        { strokeDashoffset: 0, duration: 1.6, ease: 'power2.out', stagger: 0.05, delay: 0.3 }
+      );
+    }
+
+    // ---- ScrollTrigger reveals (per section, grouped) ----
+    if (typeof ScrollTrigger !== 'undefined') {
+      const reveal = (selector, opts = {}) => {
+        gsap.fromTo(selector,
+          { opacity: 0, y: 28 },
+          {
+            opacity: 1, y: 0,
+            duration: 0.7,
+            stagger: opts.stagger ?? 0.08,
+            ease: 'power2.out',
+            scrollTrigger: {
+              trigger: opts.trigger || selector,
+              start: opts.start || 'top 88%',
+              once: true,
+            },
+            clearProps: 'opacity,transform',
+          }
+        );
+      };
+
+      reveal('#servicos .section-head');
+      reveal('.service-card', { trigger: '.services-grid', stagger: 0.08 });
+      reveal('#sobre .about-copy > *', { trigger: '#sobre', stagger: 0.08 });
+      reveal('.about-card', { trigger: '.about-side' });
+      reveal('#avaliacoes .section-head');
+      reveal('.review', { trigger: '.reviews', stagger: 0.12 });
+      reveal('#contato .contact-copy > *', { trigger: '#contato', stagger: 0.06 });
+      reveal('.contact-map', { trigger: '.contact-map' });
+
+      // KPI counter — set initial "0" before ScrollTrigger fires
+      qsa('.kpi strong').forEach(el => {
+        const decimals = parseInt(el.dataset.decimals || '0', 10);
+        const suffix = el.dataset.suffix || '';
+        el.textContent = (0).toFixed(decimals) + suffix;
+        const target = parseFloat(el.dataset.count);
+        const obj = { v: 0 };
+        gsap.to(obj, {
+          v: target,
+          duration: 1.8,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: el,
+            start: 'top 85%',
+            once: true,
+          },
+          onUpdate() {
+            el.textContent = obj.v.toFixed(decimals) + suffix;
+          },
+        });
+      });
+    }
+
+    // ---- Hover lift for service cards (gsap, no layout thrash) ----
+    qsa('.service-card').forEach(card => {
+      const enter = () => gsap.to(card, { y: -6, duration: 0.25, ease: 'power2.out', overwrite: 'auto' });
+      const leave = () => gsap.to(card, { y: 0, duration: 0.3, ease: 'power2.out', overwrite: 'auto' });
+      card.addEventListener('mouseenter', enter);
+      card.addEventListener('mouseleave', leave);
+      card.addEventListener('focusin', enter);
+      card.addEventListener('focusout', leave);
+    });
+
+    // ---- WhatsApp FAB pulse (transform only) ----
+    const fab = qs('[data-wa-fab]');
+    if (fab) {
+      const fabPulse = gsap.to(fab, {
+        scale: 1.06,
+        duration: 1.2,
+        ease: 'sine.inOut',
+        repeat: -1,
+        yoyo: true,
+      });
+
+      // Pause when tab hidden — saves CPU
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden) fabPulse.pause();
+        else fabPulse.play();
+      });
+    }
+
+    // ---- Parallax on hero decorative paws (subtle) ----
+    if (typeof ScrollTrigger !== 'undefined' && qsa('.paw-deco').length) {
+      qsa('.paw-deco').forEach((p, i) => {
+        gsap.to(p, {
+          y: -30 * (i % 2 === 0 ? 1 : -1),
+          scrollTrigger: {
+            trigger: '.hero',
+            start: 'top top',
+            end: 'bottom top',
+            scrub: 1,
+          },
+        });
+      });
+    }
+  }
+
+  // ---- Recalculate ScrollTrigger after fonts load ----
+  if (document.fonts && typeof ScrollTrigger !== 'undefined') {
+    document.fonts.ready.then(() => ScrollTrigger.refresh()).catch(() => {});
+  }
+  // And after full load (catches late layout shifts)
+  window.addEventListener('load', () => {
+    if (typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh();
+  });
+
+  // Keep GSAP ticker awake if the tab loads while hidden,
+  // and resume promptly when the tab becomes visible again.
+  if (typeof gsap !== 'undefined') {
+    if (document.hidden) gsap.ticker.wake();
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden) gsap.ticker.wake();
+    });
+  }
+})();
