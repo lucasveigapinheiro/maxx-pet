@@ -29,6 +29,7 @@
       <nav class="nav" aria-label="Navegação principal">
         <ul>
           <li><a href="#servicos">Serviços</a></li>
+          <li><a href="#cursos">Cursos</a></li>
           <li><a href="#sobre">Sobre</a></li>
           <li><a href="#avaliacoes">Avaliações</a></li>
           <li><a href="#contato">Contato</a></li>
@@ -45,6 +46,7 @@
     <div class="mobile-nav" data-mobile-nav hidden>
       <ul>
         <li><a href="#servicos" data-mobile-link>Serviços</a></li>
+        <li><a href="#cursos" data-mobile-link>Cursos</a></li>
         <li><a href="#sobre" data-mobile-link>Sobre</a></li>
         <li><a href="#avaliacoes" data-mobile-link>Avaliações</a></li>
         <li><a href="#contato" data-mobile-link>Contato</a></li>
@@ -207,6 +209,109 @@
             <a class="card-link" href="https://wa.me/5511991453280?text=Quero%20agendar%20uma%20consulta%20veterin%C3%A1ria" target="_blank" rel="noopener">Agendar →</a>
           </li>
         </ul>
+      </div>
+    </section>
+
+    <!-- CURSOS -->
+    <section class="section" id="cursos" aria-labelledby="cursos-title">
+      <div class="container">
+        <header class="section-head" data-reveal>
+          <p class="eyebrow mono">— Cursos &amp; formação</p>
+          <h2 id="cursos-title" class="display">Aprenda o ofício<br/>com <em>quem faz</em>.</h2>
+          <p class="lede">Turmas pequenas, prática desde o primeiro dia e certificado MAXX. Escolha a trilha e veja o conteúdo.</p>
+        </header>
+
+        <div class="courses" data-courses>
+          <div class="course-tabs" role="tablist" aria-label="Trilhas de curso">
+            <button class="course-tab is-active" role="tab" id="tab-banhista" aria-selected="true" aria-controls="panel-banhista" data-course-tab="banhista">
+              <img src="./assets/icon-bath.svg" alt="" width="22" height="22" />
+              <span>Banhista</span>
+            </button>
+            <button class="course-tab" role="tab" id="tab-tosador" aria-selected="false" aria-controls="panel-tosador" tabindex="-1" data-course-tab="tosador">
+              <img src="./assets/icon-scissors.svg" alt="" width="22" height="22" />
+              <span>Tosador</span>
+            </button>
+            <button class="course-tab" role="tab" id="tab-espec" aria-selected="false" aria-controls="panel-espec" tabindex="-1" data-course-tab="espec">
+              <img src="./assets/icon-star.svg" alt="" width="22" height="22" />
+              <span>Especializações</span>
+            </button>
+          </div>
+
+          <div class="course-panel is-active" role="tabpanel" id="panel-banhista" aria-labelledby="tab-banhista" data-course-panel="banhista">
+            <div class="course-info">
+              <h3>Curso de Banhista</h3>
+              <p>A porta de entrada da profissão. Você aprende a receber, manejar e banhar cães e gatos com segurança, deixando o pet limpo, seco e tranquilo.</p>
+              <ul class="course-mods" role="list">
+                <li>Manejo e contenção sem stress</li>
+                <li>Pele, pelagem e escolha de produtos</li>
+                <li>Banho, secagem e finalização</li>
+                <li>Higiene, biossegurança e rotina do box</li>
+              </ul>
+              <div class="course-actions">
+                <a class="btn primary" target="_blank" rel="noopener" href="https://wa.me/5511991453280?text=Ol%C3%A1%2C%20quero%20saber%20sobre%20o%20curso%20de%20Banhista">Quero me inscrever</a>
+                <a class="btn ghost" target="_blank" rel="noopener" href="https://wa.me/5511991453280?text=Ol%C3%A1%2C%20quero%20a%20ementa%20do%20curso%20de%20Banhista">Receber ementa</a>
+              </div>
+            </div>
+            <aside class="course-meta">
+              <dl>
+                <div><dt>Carga horária</dt><dd>40h</dd></div>
+                <div><dt>Formato</dt><dd>Presencial · prática</dd></div>
+                <div><dt>Nível</dt><dd>Iniciante</dd></div>
+                <div><dt>Turma</dt><dd>Até 6 alunos</dd></div>
+              </dl>
+            </aside>
+          </div>
+
+          <div class="course-panel" role="tabpanel" id="panel-tosador" aria-labelledby="tab-tosador" data-course-panel="tosador" hidden>
+            <div class="course-info">
+              <h3>Curso de Tosador</h3>
+              <p>Da máquina à tesoura. Técnica de tosa higiênica, tosa bebê e padrões de raça, com foco em acabamento e no bem-estar do animal.</p>
+              <ul class="course-mods" role="list">
+                <li>Equipamentos, lâminas e manutenção</li>
+                <li>Tosa higiênica e tosa na máquina</li>
+                <li>Tosa na tesoura e simetria</li>
+                <li>Padrões das principais raças</li>
+              </ul>
+              <div class="course-actions">
+                <a class="btn primary" target="_blank" rel="noopener" href="https://wa.me/5511991453280?text=Ol%C3%A1%2C%20quero%20saber%20sobre%20o%20curso%20de%20Tosador">Quero me inscrever</a>
+                <a class="btn ghost" target="_blank" rel="noopener" href="https://wa.me/5511991453280?text=Ol%C3%A1%2C%20quero%20a%20ementa%20do%20curso%20de%20Tosador">Receber ementa</a>
+              </div>
+            </div>
+            <aside class="course-meta">
+              <dl>
+                <div><dt>Carga horária</dt><dd>80h</dd></div>
+                <div><dt>Formato</dt><dd>Presencial · prática</dd></div>
+                <div><dt>Nível</dt><dd>Intermediário</dd></div>
+                <div><dt>Pré-requisito</dt><dd>Banhista ou experiência</dd></div>
+              </dl>
+            </aside>
+          </div>
+
+          <div class="course-panel" role="tabpanel" id="panel-espec" aria-labelledby="tab-espec" data-course-panel="espec" hidden>
+            <div class="course-info">
+              <h3>Especializações</h3>
+              <p>Módulos curtos para quem já atua e quer se destacar. Faça um ou combine vários.</p>
+              <ul class="course-mods" role="list">
+                <li>Tosa criativa e coloração pet-safe</li>
+                <li>Pets geriátricos e de cuidados especiais</li>
+                <li>Primeiros socorros no salão</li>
+                <li>Comportamento e leitura de sinais de stress</li>
+              </ul>
+              <div class="course-actions">
+                <a class="btn primary" target="_blank" rel="noopener" href="https://wa.me/5511991453280?text=Ol%C3%A1%2C%20quero%20saber%20sobre%20as%20Especializa%C3%A7%C3%B5es">Quero me inscrever</a>
+                <a class="btn ghost" target="_blank" rel="noopener" href="https://wa.me/5511991453280?text=Ol%C3%A1%2C%20quero%20a%20grade%20das%20Especializa%C3%A7%C3%B5es">Ver grade completa</a>
+              </div>
+            </div>
+            <aside class="course-meta">
+              <dl>
+                <div><dt>Carga horária</dt><dd>8h a 16h por módulo</dd></div>
+                <div><dt>Formato</dt><dd>Presencial · intensivo</dd></div>
+                <div><dt>Nível</dt><dd>Avançado</dd></div>
+                <div><dt>Certificado</dt><dd>Por módulo concluído</dd></div>
+              </dl>
+            </aside>
+          </div>
+        </div>
       </div>
     </section>
 

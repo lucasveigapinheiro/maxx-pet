@@ -49,6 +49,42 @@
     });
   }
 
+  // ---- Courses tabs ----
+  const courses = qs('[data-courses]');
+  if (courses) {
+    const tabs = qsa('[data-course-tab]', courses);
+    const panels = qsa('[data-course-panel]', courses);
+    const activate = (key, focus) => {
+      tabs.forEach(t => {
+        const on = t.dataset.courseTab === key;
+        t.classList.toggle('is-active', on);
+        t.setAttribute('aria-selected', String(on));
+        t.tabIndex = on ? 0 : -1;
+        if (on && focus) t.focus();
+      });
+      panels.forEach(p => {
+        const on = p.dataset.coursePanel === key;
+        p.hidden = !on;
+        p.classList.toggle('is-active', on);
+        if (on && !reduced()) {
+          p.classList.remove('is-animating');
+          void p.offsetWidth;
+          p.classList.add('is-animating');
+        }
+      });
+    };
+    tabs.forEach((tab, i) => {
+      tab.addEventListener('click', () => activate(tab.dataset.courseTab));
+      tab.addEventListener('keydown', e => {
+        if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+        e.preventDefault();
+        const dir = e.key === 'ArrowRight' ? 1 : -1;
+        const next = (i + dir + tabs.length) % tabs.length;
+        activate(tabs[next].dataset.courseTab, true);
+      });
+    });
+  }
+
   // ============================================================
   // GSAP
   // ============================================================
@@ -120,6 +156,8 @@
 
       reveal('#servicos .section-head');
       reveal('.service-card', { trigger: '.services-grid', stagger: 0.08 });
+      reveal('#cursos .section-head > *', { trigger: '#cursos', stagger: 0.08 });
+      reveal('.courses', { trigger: '.courses' });
       reveal('#sobre .about-copy > *', { trigger: '#sobre', stagger: 0.08 });
       reveal('.about-card', { trigger: '.about-side' });
       reveal('#avaliacoes .section-head');
