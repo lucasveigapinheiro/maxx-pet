@@ -2,6 +2,10 @@
 
 Website profissional, responsivo e animado para a **MAXX Pet Shop**, localizada em Santa Terezinha, São Bernardo do Campo.
 
+🔗 **No ar:** [maxx-pet.vercel.app](https://maxx-pet.vercel.app)
+
+**Autor:** Lucas Veiga Pinheiro — [LinkedIn](https://www.linkedin.com/in/lucas-veiga-pinheiro-5001653b0/) · [Portfólio](https://morphcodesite.vercel.app)
+
 ## 📌 Informações da Empresa
 
 - **Nome:** MAXX Pet Shop
