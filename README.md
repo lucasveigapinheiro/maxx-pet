@@ -1,5 +1,7 @@
 # MAXX Pet Shop — Site Institucional
 
+![MAXX Pet Shop — site no ar](assets/maxx-preview.jpg)
+
 Website profissional, responsivo e animado para a **MAXX Pet Shop**, localizada em Santa Terezinha, São Bernardo do Campo.
 
 🔗 **No ar:** [maxx-pet.vercel.app](https://maxx-pet.vercel.app)
